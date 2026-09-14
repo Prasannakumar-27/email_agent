@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Email Agent</title>
+    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <style>
+        :root {
+            --bg-outer: #0a0a0a; --bg-black: #000000;
+            --theme-green: #4ade80; --theme-green-glow: rgba(74, 222, 128, 0.2);
+            --text-light: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        body { background-color: var(--bg-outer); display: flex; justify-content: center; align-items: center; height: 100vh; color: var(--text-light); }
+        
+        .login-box {
+            background: var(--bg-black);
+            border: 2px solid var(--theme-green);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 50px var(--theme-green-glow);
+            max-width: 400px; width: 90%;
+        }
+        .login-box h1 { color: var(--theme-green); font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .login-box p { color: #a1a1aa; margin-bottom: 30px; font-size: 0.9rem; line-height: 1.5; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; color: var(--theme-green); font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; letter-spacing: 1px; }
+        .input-group input { 
+            width: 100%; padding: 15px; background: #111; border: 1px solid #333; 
+            color: var(--text-light); border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; 
+        }
+        .input-group input:focus { border-color: var(--theme-green); box-shadow: 0 0 10px var(--theme-green-glow); }
+        
+        .btn-login {
+            display: block; width: 100%; padding: 15px; margin-top: 10px;
+            background: var(--theme-green); color: var(--bg-black);
+            border: none; border-radius: 30px; font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: 0.3s; letter-spacing: 1px;
+        }
+        .btn-login:hover { background: #22c55e; box-shadow: 0 0 15px var(--theme-green-glow); }
+        
+        .error { color: #ef4444; font-size: 0.85rem; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>AGENT//MAIL</h1>
+        <p>Enter your details to configure your email signature and reply-to address.</p>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label>FULL NAME</label>
+                <input type="text" name="name" placeholder="John Doe" required>
+            </div>
+            <div class="input-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <button type="submit" class="btn-login">ENTER WORKSPACE</button>
+        </form>
+    </div>
+</body>
+</html>
