@@ -9,7 +9,7 @@ load_dotenv()
 
 # --- FIXED INITIALIZATION ---
 # Initialize the app ONCE at the top, pointing to the templates folder
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__)
 # Use a static secret key so Vercel doesn't log you out on every request
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "super-secret-fixed-key-12345")
 
