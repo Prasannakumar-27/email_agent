@@ -7,8 +7,11 @@ from groq import Groq
 
 load_dotenv()
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24)
+# --- FIXED INITIALIZATION ---
+# Initialize the app ONCE at the top, pointing to the templates folder
+app = Flask(__name__, template_folder="../templates")
+# Use a static secret key so Vercel doesn't log you out on every request
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "super-secret-fixed-key-12345")
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 resend.api_key = os.getenv("RESEND_API_KEY")
@@ -99,7 +102,3 @@ def send():
         
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
-# Change app initialization to:
-app = Flask(__name__, template_folder="../templates")
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "super-secret-fixed-key-12345")
