@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Email Agent</title>
-    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-outer: #0a0a0a; --bg-black: #000000; --bg-panel: #111111;
@@ -14,45 +14,47 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
         body { background-color: var(--bg-outer); color: var(--text-light); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
-        .green-strip { background: linear-gradient(90deg, #22c55e, var(--theme-green), #22c55e); height: 8px; width: 100%; border-top-left-radius: 20px; border-top-right-radius: 20px; }
-        .app-container { width: 85%; max-width: 1400px; height: 85vh; background: var(--bg-black); border: 2px solid var(--theme-green); border-radius: 24px; display: flex; flex-direction: column; box-shadow: 0 15px 50px var(--theme-green-glow); }
+        .green-strip { background: linear-gradient(90deg, #22c55e, var(--theme-green), #22c55e); height: 8px; width: 100%; border-top-left-radius: 20px; border-top-right-radius: 20px; flex-shrink: 0; }
+        .app-container { width: 85%; max-width: 1400px; height: 85vh; background: var(--bg-black); border: 2px solid var(--theme-green); border-radius: 24px; display: flex; flex-direction: column; box-shadow: 0 15px 50px var(--theme-green-glow); overflow: hidden; }
         
-        .header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--theme-green); background: var(--bg-panel); }
+        .header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--theme-green); background: var(--bg-panel); flex-shrink: 0; }
         .header h1 { color: var(--theme-green); font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
         
         .user-controls { display: flex; align-items: center; gap: 20px; }
         .user-email { color: var(--text-light); font-size: 0.9rem; font-weight: 500; }
-        .logout-btn { padding: 8px 20px; background: transparent; color: var(--theme-green); border: 1px solid var(--theme-green); border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: 0.3s; }
+        .logout-btn { padding: 8px 20px; background: transparent; color: var(--theme-green); border: 1px solid var(--theme-green); border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: 0.3s; white-space: nowrap; }
         .logout-btn:hover { background: rgba(74, 222, 128, 0.1); }
 
-        .workspace { display: flex; flex: 1; overflow: hidden; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+        .workspace { display: flex; flex: 1; overflow: hidden; }
         
         /* Left Side */
         .chat-section { width: 50%; display: flex; flex-direction: column; border-right: 2px solid var(--theme-green); background: var(--bg-black); }
         .chat-history { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-        .message { max-width: 85%; padding: 15px 20px; border-radius: 20px; font-size: 0.95rem; line-height: 1.6; }
+        
+        /* Fixed word-wrapping for long unbroken texts */
+        .message { max-width: 85%; padding: 15px 20px; border-radius: 20px; font-size: 0.95rem; line-height: 1.6; word-break: break-word; overflow-wrap: break-word; }
         .msg-user { background: var(--bg-panel); color: var(--text-light); align-self: flex-end; border-bottom-right-radius: 4px; border: 1px solid #333; }
         .msg-agent { background: rgba(74, 222, 128, 0.1); color: var(--text-light); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--theme-green); }
         
-        .chat-input-area { padding: 20px; background: var(--bg-panel); border-top: 1px solid #222; display: flex; gap: 15px; }
-        .chat-input-area input { flex: 1; padding: 15px 20px; background: var(--bg-black); border: 2px solid #333; color: var(--text-light); border-radius: 30px; outline: none; font-size: 0.95rem; transition: 0.3s; }
+        .chat-input-area { padding: 20px; background: var(--bg-panel); border-top: 1px solid #222; display: flex; gap: 15px; flex-shrink: 0; }
+        .chat-input-area input { flex: 1; padding: 15px 20px; background: var(--bg-black); border: 2px solid #333; color: var(--text-light); border-radius: 30px; outline: none; font-size: 0.95rem; transition: 0.3s; min-width: 0; /* Prevents flexbox overflow */ }
         .chat-input-area input:focus { border-color: var(--theme-green); }
-        .chat-input-area button { padding: 0 30px; background: var(--theme-green); color: var(--bg-black); border: none; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .chat-input-area button { padding: 0 30px; background: var(--theme-green); color: var(--bg-black); border: none; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
         .chat-input-area button:hover { background: #22c55e; box-shadow: 0 0 15px var(--theme-green-glow); }
 
         /* Right Side */
-        .preview-section { width: 50%; background: var(--bg-black); display: flex; flex-direction: column; padding: 30px; }
-        .preview-title { color: var(--text-light); font-size: 1.2rem; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { font-size: 0.75rem; background: #222; color: var(--text-muted); padding: 6px 14px; border-radius: 20px; border: 1px solid #444; font-weight: 600; }
+        .preview-section { width: 50%; background: var(--bg-black); display: flex; flex-direction: column; padding: 30px; overflow-y: auto; }
+        .preview-title { color: var(--text-light); font-size: 1.2rem; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .status-badge { font-size: 0.75rem; background: #222; color: var(--text-muted); padding: 6px 14px; border-radius: 20px; border: 1px solid #444; font-weight: 600; white-space: nowrap; }
         
-        .email-field { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+        .email-field { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
         .email-field label, .email-body label { color: var(--theme-green); font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; }
         .email-field input { padding: 15px; border: 1px solid #333; background: var(--bg-panel); color: var(--text-light); font-weight: 500; outline: none; border-radius: 12px; font-size: 0.95rem; transition: 0.3s; }
-        .email-body { flex: 1; display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px; }
+        .email-body { flex: 1; display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px; min-height: 200px; }
         .email-body textarea { flex: 1; padding: 20px; border: 1px solid #333; background: var(--bg-panel); color: var(--text-light); font-size: 0.95rem; resize: none; outline: none; border-radius: 16px; line-height: 1.6; transition: 0.3s; }
         .email-field input:focus, .email-body textarea:focus { border-color: var(--theme-green); }
         
-        .preview-actions { display: flex; gap: 20px; }
+        .preview-actions { display: flex; gap: 20px; flex-shrink: 0; }
         .preview-actions button { flex: 1; padding: 16px; font-size: 0.95rem; font-weight: 700; border: none; border-radius: 30px; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
         .btn-approve { background: var(--theme-green); color: var(--bg-black); box-shadow: 0 4px 15px var(--theme-green-glow); }
         .btn-approve:hover { background: #22c55e; transform: translateY(-2px); }
@@ -63,6 +65,54 @@
         ::-webkit-scrollbar-track { background: var(--bg-black); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--theme-green); }
+
+        /* --- RESPONSIVE STYLES --- */
+        
+        /* Tablet Layout */
+        @media (max-width: 1024px) {
+            .app-container { width: 95%; height: 90vh; }
+            .workspace { flex-direction: column; overflow-y: auto; }
+            .chat-section, .preview-section { width: 100%; flex: none; height: auto; }
+            
+            /* Give chat a solid height on tablet so it scrolls internally */
+            .chat-section { height: 60vh; border-right: none; border-bottom: 2px solid var(--theme-green); }
+            .preview-section { min-height: 60vh; overflow-y: visible; }
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            body { padding: 0; align-items: flex-start; }
+            
+            /* Use dvh to adjust dynamically when the mobile keyboard pops up */
+            .app-container { width: 100%; height: 100dvh; max-height: 100dvh; border-radius: 0; border: none; }
+            .green-strip { border-radius: 0; }
+            
+            .header { padding: 15px 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
+            .user-controls { width: 100%; justify-content: space-between; }
+            .user-email { font-size: 0.8rem; }
+            .logout-btn { padding: 6px 15px; font-size: 0.75rem; }
+
+            .workspace { overflow-y: auto; }
+            
+            /* Set clear boundaries for mobile scrolling */
+            .chat-section { height: 75vh; }
+            .preview-section { min-height: auto; padding: 20px; }
+            
+            .chat-history { padding: 15px; gap: 15px; }
+            .message { max-width: 92%; padding: 12px 16px; font-size: 0.9rem; }
+            
+            .chat-input-area { padding: 12px; gap: 10px; }
+            /* 16px font size is CRITICAL here to prevent iOS from automatically zooming the screen */
+            .chat-input-area input { padding: 12px 15px; font-size: 16px; border-radius: 20px; }
+            .chat-input-area button { padding: 0 20px; font-size: 0.85rem; border-radius: 20px; }
+            
+            .preview-title { font-size: 1.1rem; flex-direction: column; align-items: flex-start; gap: 10px; }
+            .email-field input { font-size: 16px; /* Prevent iOS zoom */ }
+            .email-body textarea { font-size: 16px; min-height: 250px; /* Prevent iOS zoom */ }
+            
+            .preview-actions { flex-direction: column; gap: 12px; margin-top: 10px; }
+            .preview-actions button { padding: 14px; font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -82,7 +132,7 @@
                     <div class="message msg-agent">System Initialized via HTTP. Tell me what you need to draft.</div>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="Write a sick leave request to manager..." autocomplete="off">
+                    <input type="text" id="chatInput" placeholder="Write a sick leave request..." autocomplete="off">
                     <button id="sendBtn">SEND</button>
                 </div>
             </div>
@@ -151,6 +201,10 @@
                     messageHistory.push({ role: "user", content: userQuery }, { role: "assistant", content: data.reply });
                     chatHistory.removeChild(chatHistory.lastChild);
                     appendMessage('agent', 'Draft generated. Review the preview pane. You can request changes or click Approve to send.');
+                    
+                    if(window.innerWidth <= 1024) {
+                        document.querySelector('.preview-section').scrollIntoView({ behavior: 'smooth' });
+                    }
                 } else {
                     chatHistory.removeChild(chatHistory.lastChild);
                     appendMessage('agent', 'Error processing request: ' + data.message);
@@ -182,6 +236,10 @@
             appendMessage('user', 'Send the email.');
             appendMessage('agent', 'Sending email via Resend API...');
             
+            if(window.innerWidth <= 1024) {
+                document.querySelector('.chat-section').scrollIntoView({ behavior: 'smooth' });
+            }
+            
             try {
                 const response = await fetch('/api/send', {
                     method: 'POST',
@@ -211,6 +269,10 @@
             if (!pendingEmail) return;
             appendMessage('user', 'I need to make changes to this draft.');
             appendMessage('agent', 'Type your changes below.');
+            
+            if(window.innerWidth <= 1024) {
+                document.querySelector('.chat-section').scrollIntoView({ behavior: 'smooth' });
+            }
             chatInput.focus();
         });
     </script>

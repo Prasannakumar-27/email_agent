@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - AI Email Agent</title>
-    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-outer: #0a0a0a; --bg-black: #000000;
@@ -12,7 +12,7 @@
             --text-light: #ffffff;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        body { background-color: var(--bg-outer); display: flex; justify-content: center; align-items: center; height: 100vh; color: var(--text-light); }
+        body { background-color: var(--bg-outer); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; color: var(--text-light); }
         
         .login-box {
             background: var(--bg-black);
@@ -21,7 +21,7 @@
             padding: 40px;
             text-align: center;
             box-shadow: 0 15px 50px var(--theme-green-glow);
-            max-width: 400px; width: 90%;
+            max-width: 400px; width: 100%;
         }
         .login-box h1 { color: var(--theme-green); font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 10px; }
         .login-box p { color: #a1a1aa; margin-bottom: 30px; font-size: 0.9rem; line-height: 1.5; }
@@ -43,6 +43,16 @@
         .btn-login:hover { background: #22c55e; box-shadow: 0 0 15px var(--theme-green-glow); }
         
         .error { color: #ef4444; font-size: 0.85rem; margin-bottom: 15px; }
+
+        /* --- RESPONSIVE STYLES --- */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .login-box h1 { font-size: 1.5rem; }
+            .login-box p { font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
